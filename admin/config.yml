@@ -6,6 +6,22 @@ media_folder: "images"
 public_folder: "images"
 
 collections:
+  - name: "site_settings"
+    label: "Configurações do Site"
+    files:
+      - file: "content/settings.json"
+        label: "Contato e Redes Sociais"
+        name: "settings"
+        fields:
+          - label: "Número do WhatsApp"
+            name: "whatsapp"
+            widget: "string"
+            hint: "Formato: 5532999999999 (código do país + DDD + número, sem espaços ou símbolos)"
+          - label: "Link do Instagram"
+            name: "instagram"
+            widget: "string"
+            hint: "Ex: https://instagram.com/lojagabi"
+
   - name: "products_data"
     label: "Produtos"
     files:

@@ -179,8 +179,8 @@
     <span class="mono">Fale com a gente</span>
     <h2 class="display">Bora escolher<br>seu próximo look?</h2>
     <div class="contact-links">
-      <a href="https://wa.me/5500000000000" target="_blank" rel="noopener" class="cta">WhatsApp</a>
-      <a href="https://instagram.com" target="_blank" rel="noopener" class="cta cta-outline" style="border-color:var(--paper);">Instagram</a>
+      <a id="link-whatsapp" href="#" target="_blank" rel="noopener" class="cta">WhatsApp</a>
+      <a id="link-instagram" href="#" target="_blank" rel="noopener" class="cta cta-outline" style="border-color:var(--paper);">Instagram</a>
     </div>
   </div>
 </section>
@@ -197,6 +197,17 @@
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, {threshold:0.15});
   revealEls.forEach(el=>io.observe(el));
+
+  // Carrega configurações do site (whatsapp/instagram) editáveis pelo painel /admin
+  fetch('content/settings.json?_=' + Date.now())
+    .then(r => r.json())
+    .then(cfg => {
+      const wa = document.getElementById('link-whatsapp');
+      const ig = document.getElementById('link-instagram');
+      if (wa && cfg.whatsapp) wa.href = 'https://wa.me/' + cfg.whatsapp;
+      if (ig && cfg.instagram) ig.href = cfg.instagram;
+    })
+    .catch(() => {});
 
   // Carrega produtos do arquivo editável pelo painel /admin
   fetch('content/products.json?_=' + Date.now())
