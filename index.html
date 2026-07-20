@@ -87,6 +87,13 @@
   .product-card .cat{ opacity:0.5; display:block; margin-bottom:0.3rem; }
   .product-card h3{ font-family:'Anton', sans-serif; font-size:1.1rem; text-transform:uppercase; margin-bottom:0.35rem; line-height:1.1; }
   .product-card .price{ font-family:'Space Mono', monospace; font-size:0.95rem; color:var(--brick); font-weight:700; }
+  .product-ask{
+    display:inline-flex; align-items:center; gap:0.3rem;
+    margin-top:0.7rem; font-size:0.68rem; color:var(--olive);
+    border-bottom:1px solid transparent; padding-bottom:2px;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .product-ask:hover{ border-color:var(--olive); color:var(--ink); }
   .product-empty{ font-family:'Space Mono', monospace; font-size:0.85rem; opacity:0.6; grid-column:1/-1; padding:2rem 0; }
 
   .about{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:3rem; align-items:center; }
@@ -198,19 +205,23 @@
   }, {threshold:0.15});
   revealEls.forEach(el=>io.observe(el));
 
-  // Carrega configurações do site (whatsapp/instagram) editáveis pelo painel /admin
+  let whatsappNumero = '';
+
+  // Carrega configurações do site (whatsapp/instagram), depois os produtos
   fetch('content/settings.json?_=' + Date.now())
     .then(r => r.json())
     .then(cfg => {
       const wa = document.getElementById('link-whatsapp');
       const ig = document.getElementById('link-instagram');
-      if (wa && cfg.whatsapp) wa.href = 'https://wa.me/' + cfg.whatsapp;
+      whatsappNumero = cfg.whatsapp || '';
+      const msgGeral = encodeURIComponent('Olá! Vim através do site da Loja Gabi e gostaria de saber mais sobre as peças 😊');
+      if (wa && whatsappNumero) wa.href = 'https://wa.me/' + whatsappNumero + '?text=' + msgGeral;
       if (ig && cfg.instagram) ig.href = cfg.instagram;
     })
-    .catch(() => {});
-
-  // Carrega produtos do arquivo editável pelo painel /admin
-  fetch('content/products.json?_=' + Date.now())
+    .catch(() => {})
+    .finally(() => {
+      // Carrega produtos do arquivo editável pelo painel /admin (depois de saber o whatsapp)
+      fetch('content/products.json?_=' + Date.now())
     .then(r => r.json())
     .then(data => {
       const grid = document.getElementById('produtos-grid');
@@ -221,20 +232,26 @@
         grid.innerHTML = '<p class="product-empty">Nenhum produto cadastrado ainda.</p>';
         return;
       }
-      grid.innerHTML = produtos.map(p => `
+      grid.innerHTML = produtos.map(p => {
+        const msg = encodeURIComponent(`Olá! Vim pelo site da Loja Gabi e tenho interesse nesta peça: ${p.title || ''} (${p.price || ''})`);
+        const linkWa = whatsappNumero ? `https://wa.me/${whatsappNumero}?text=${msg}` : '#contato';
+        return `
         <div class="product-card">
           <img class="photo" src="${p.image || 'images/placeholder.jpg'}" alt="${p.title || ''}" loading="lazy">
           <div class="info">
             <span class="mono cat">${p.category || ''}</span>
             <h3>${p.title || 'Peça sem nome'}</h3>
             <span class="price">${p.price || ''}</span>
+            <a href="${linkWa}" target="_blank" rel="noopener" class="product-ask mono">Perguntar no WhatsApp →</a>
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     })
     .catch(() => {
       document.getElementById('produtos-grid').innerHTML = '<p class="product-empty">Não foi possível carregar os produtos.</p>';
       document.getElementById('produtos-count').textContent = '—';
+    });
     });
 </script>
 
