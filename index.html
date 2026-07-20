@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loja Gabi — Moda Feminina</title>
+<title>Meninas de Luxo — Moda Feminina</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -30,7 +30,7 @@
     padding:1.25rem 5vw; background:rgba(237,234,226,0.88); backdrop-filter:blur(6px);
     border-bottom:1px solid var(--line);
   }
-  header .logo{ font-family:'Anton', sans-serif; font-size:1.3rem; letter-spacing:0.02em;}
+  header .logo{ font-family:'Anton', sans-serif; font-size:clamp(0.95rem, 3vw, 1.3rem); letter-spacing:0.01em; white-space:nowrap;}
   nav{display:flex; gap:2rem;}
   nav a{ font-family:'Space Mono', monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em; position:relative; padding-bottom:2px;}
   nav a::after{content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--ink); transition:width .25s ease;}
@@ -124,7 +124,7 @@
 <body>
 
 <header>
-  <div class="logo">LOJA GABI</div>
+  <div class="logo">MENINAS DE LUXO</div>
   <nav>
     <a href="#produtos">Produtos</a>
     <a href="#colecao">Categorias</a>
@@ -144,7 +144,7 @@
 <section class="hero">
   <div>
     <h1 class="display">Vestir é<br>uma <em>atitude</em></h1>
-    <p class="sub">A Loja Gabi é moda feminina despojada, pensada para o dia a dia real: peças versáteis, confortáveis e com identidade própria.</p>
+    <p class="sub">A Meninas de Luxo é moda feminina despojada, pensada para o dia a dia real: peças versáteis, confortáveis e com identidade própria.</p>
   </div>
   <div class="hero-side">
     <a href="#produtos" class="cta">Ver produtos</a>
@@ -177,7 +177,7 @@
 
 <section class="section reveal about" id="sobre">
   <div><p class="display big-quote">Feito por mulheres, para <span class="brick">mulheres reais</span>.</p></div>
-  <div><p>A Loja Gabi nasceu da vontade de vestir bem sem complicação. Cada peça é escolhida a dedo, pensando em quem trabalha, cuida da casa, sai com as amigas e ainda quer se sentir bonita no meio da correria. Aqui você encontra moda com atitude, preço justo e atendimento próximo — de mulher para mulher.</p></div>
+  <div><p>A Meninas de Luxo nasceu da vontade de vestir bem sem complicação. Cada peça é escolhida a dedo, pensando em quem trabalha, cuida da casa, sai com as amigas e ainda quer se sentir bonita no meio da correria. Aqui você encontra moda com atitude, preço justo e atendimento próximo — de mulher para mulher.</p></div>
 </section>
 
 <section class="section reveal" id="contato">
@@ -192,7 +192,7 @@
 </section>
 
 <footer>
-  <span class="mono">© 2026 Loja Gabi</span>
+  <span class="mono">© 2026 Meninas de Luxo</span>
   <span class="mono">Moda feminina · despojada · autoral</span>
 </footer>
 
@@ -213,7 +213,7 @@
       const wa = document.getElementById('link-whatsapp');
       const ig = document.getElementById('link-instagram');
       whatsappNumero = cfg.whatsapp || '';
-      const msgGeral = encodeURIComponent('Olá! Vim através do site da Loja Gabi e gostaria de saber mais sobre as peças 😊');
+      const msgGeral = encodeURIComponent('Olá! Vim através do site da Meninas de Luxo e gostaria de saber mais sobre as peças 😊');
       if (wa && whatsappNumero) wa.href = 'https://wa.me/' + whatsappNumero + '?text=' + msgGeral;
       if (ig && cfg.instagram) ig.href = cfg.instagram;
     })
@@ -232,7 +232,7 @@
         return;
       }
       grid.innerHTML = produtos.map(p => {
-        const msg = encodeURIComponent(`Olá! Vim pelo site da Loja Gabi e tenho interesse nesta peça: ${p.title || ''} (${p.price || ''})`);
+        const msg = encodeURIComponent(`Olá! Vim pelo site da Meninas de Luxo e tenho interesse nesta peça: ${p.title || ''} (${p.price || ''})`);
         const linkWa = whatsappNumero ? `https://wa.me/${whatsappNumero}?text=${msg}` : '#contato';
         return `
         <div class="product-card">
