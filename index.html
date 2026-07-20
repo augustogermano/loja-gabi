@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loja Gabi — Moda Feminina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEAE2;
+    --ink:#17181A;
+    --olive:#4C5B3D;
+    --brick:#B23E36;
+    --sand:#E4DAC0;
+    --line: rgba(23,24,26,0.15);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ background:var(--paper); color:var(--ink); font-family:'Work Sans', sans-serif; overflow-x:hidden; }
+  ::selection{background:var(--brick); color:var(--paper);}
+  a{color:inherit; text-decoration:none;}
+  .display{ font-family:'Anton', sans-serif; text-transform:uppercase; letter-spacing:0.01em; line-height:0.88; }
+  .mono{ font-family:'Space Mono', monospace; text-transform:uppercase; letter-spacing:0.12em; font-size:0.72rem; }
+
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.25rem 5vw; background:rgba(237,234,226,0.88); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  header .logo{ font-family:'Anton', sans-serif; font-size:1.3rem; letter-spacing:0.02em;}
+  nav{display:flex; gap:2rem;}
+  nav a{ font-family:'Space Mono', monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em; position:relative; padding-bottom:2px;}
+  nav a::after{content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--ink); transition:width .25s ease;}
+  nav a:hover::after{width:100%;}
+  @media(max-width:720px){ nav{display:none;} }
+
+  .marquee{ margin-top:70px; background:var(--ink); color:var(--paper); padding:0.6rem 0; overflow:hidden; white-space:nowrap; border-bottom:1px solid var(--ink); }
+  .marquee-track{ display:inline-block; animation: scroll 22s linear infinite; font-family:'Space Mono', monospace; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; }
+  .marquee-track span{ margin:0 1.5rem; }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  .hero{ position:relative; padding:6vw 5vw 8vw; display:grid; grid-template-columns:1.3fr 0.7fr; gap:3rem; align-items:end; border-bottom:1px solid var(--line); }
+  .hero h1{ font-size:clamp(3.2rem, 9vw, 8.5rem); }
+  .hero h1 em{ font-style:normal; color:var(--brick); }
+  .hero p.sub{ max-width:34ch; font-size:1rem; color:rgba(23,24,26,0.75); margin-top:1.5rem; line-height:1.55; }
+  .hero-side{ display:flex; flex-direction:column; gap:1.2rem; align-items:flex-start; }
+  .cta{ display:inline-flex; align-items:center; gap:0.6rem; background:var(--ink); color:var(--paper); padding:0.9rem 1.6rem; font-family:'Space Mono', monospace; font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; border-radius:2px; transition:transform .2s ease, background .2s ease; }
+  .cta:hover{ background:var(--brick); transform:translateY(-2px); }
+  .cta-outline{ border:1px solid var(--ink); background:transparent; color:var(--ink); }
+  .cta-outline:hover{ background:var(--ink); color:var(--paper); }
+  @media(max-width:820px){ .hero{ grid-template-columns:1fr; } }
+
+  .tag{ position:relative; background:var(--sand); border:1px solid var(--line); border-radius:4px 12px 12px 4px; padding:1.6rem 1.5rem 1.5rem 2.4rem; transition:transform .35s ease; }
+  .tag:hover{ transform:rotate(-1.5deg) translateY(-4px); }
+  .tag::before{ content:''; position:absolute; left:0.8rem; top:1.6rem; width:8px; height:8px; border-radius:50%; border:1.5px solid var(--ink); background:var(--paper); }
+  .tag .mono{ opacity:0.55; display:block; margin-bottom:0.5rem;}
+  .tag h3{ font-family:'Anton', sans-serif; font-size:1.5rem; text-transform:uppercase; margin-bottom:0.4rem;}
+  .tag p{ font-size:0.88rem; color:rgba(23,24,26,0.7); line-height:1.5;}
+
+  .section{ padding:6vw 5vw; }
+  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2.5rem; gap:1rem; flex-wrap:wrap; border-bottom:1px solid var(--line); padding-bottom:1.2rem; }
+  .section-head h2{ font-size:clamp(2rem, 5vw, 3.4rem); }
+  .section-head .mono{ opacity:0.55; }
+
+  .tag-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:1.4rem; }
+  @media(max-width:900px){ .tag-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:520px){ .tag-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- Produtos (dinâmico via content/products.json) ---------- */
+  .product-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:1.6rem; }
+  @media(max-width:900px){ .product-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:520px){ .product-grid{ grid-template-columns:1fr; } }
+  .product-card{
+    background:var(--sand); border:1px solid var(--line); border-radius:4px;
+    overflow:hidden; display:flex; flex-direction:column;
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .product-card:hover{ transform:translateY(-4px); box-shadow:0 10px 24px rgba(23,24,26,0.12); }
+  .product-card .photo{
+    aspect-ratio:4/5; width:100%; object-fit:cover; background:var(--ink);
+    display:block;
+  }
+  .product-card .info{ padding:1rem 1.1rem 1.2rem; }
+  .product-card .cat{ opacity:0.5; display:block; margin-bottom:0.3rem; }
+  .product-card h3{ font-family:'Anton', sans-serif; font-size:1.1rem; text-transform:uppercase; margin-bottom:0.35rem; line-height:1.1; }
+  .product-card .price{ font-family:'Space Mono', monospace; font-size:0.95rem; color:var(--brick); font-weight:700; }
+  .product-empty{ font-family:'Space Mono', monospace; font-size:0.85rem; opacity:0.6; grid-column:1/-1; padding:2rem 0; }
+
+  .about{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:3rem; align-items:center; }
+  .about .big-quote{ font-family:'Anton', sans-serif; font-size:clamp(1.8rem,4vw,3rem); line-height:1.05; }
+  .about .big-quote .brick{ color:var(--brick); }
+  .about p{ line-height:1.7; color:rgba(23,24,26,0.75); margin-top:1.2rem; max-width:48ch;}
+  @media(max-width:820px){ .about{ grid-template-columns:1fr; } }
+
+  .contact{ background:var(--ink); color:var(--paper); border-radius:6px; padding:5vw; display:flex; flex-direction:column; align-items:flex-start; gap:1.5rem; }
+  .contact h2{ font-size:clamp(2.4rem,6vw,4.5rem); }
+  .contact-links{ display:flex; gap:1rem; flex-wrap:wrap; }
+  .contact .cta{ background:var(--paper); color:var(--ink); }
+  .contact .cta:hover{ background:var(--brick); color:var(--paper); }
+
+  footer{ padding:2.5rem 5vw; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
+  footer .mono{ opacity:0.55; }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    .marquee-track{ animation:none; }
+    .reveal{ transition:none; opacity:1; transform:none; }
+    .tag:hover, .product-card:hover{ transform:none; }
+  }
+  a:focus-visible, .cta:focus-visible{ outline:2px solid var(--brick); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">LOJA GABI</div>
+  <nav>
+    <a href="#produtos">Produtos</a>
+    <a href="#colecao">Categorias</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#contato">Contato</a>
+  </nav>
+  <a href="#contato" class="cta mono" style="padding:0.6rem 1.1rem;">Fale conosco</a>
+</header>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>✦ NOVA COLEÇÃO</span><span>✦ MODA FEMININA</span><span>✦ PEÇAS AUTORAIS</span><span>✦ ENTREGA PARA TODO BRASIL</span>
+    <span>✦ NOVA COLEÇÃO</span><span>✦ MODA FEMININA</span><span>✦ PEÇAS AUTORAIS</span><span>✦ ENTREGA PARA TODO BRASIL</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div>
+    <h1 class="display">Vestir é<br>uma <em>atitude</em></h1>
+    <p class="sub">A Loja Gabi é moda feminina despojada, pensada para o dia a dia real: peças versáteis, confortáveis e com identidade própria.</p>
+  </div>
+  <div class="hero-side">
+    <a href="#produtos" class="cta">Ver produtos</a>
+    <a href="#contato" class="cta cta-outline">Pedir pelo WhatsApp</a>
+  </div>
+</section>
+
+<section class="section reveal" id="produtos">
+  <div class="section-head">
+    <h2 class="display">Produtos</h2>
+    <span class="mono" id="produtos-count">carregando...</span>
+  </div>
+  <div class="product-grid" id="produtos-grid">
+    <p class="product-empty">Carregando produtos...</p>
+  </div>
+</section>
+
+<section class="section reveal" id="colecao">
+  <div class="section-head">
+    <h2 class="display">Categorias</h2>
+    <span class="mono">04 grupos</span>
+  </div>
+  <div class="tag-grid">
+    <div class="tag"><span class="mono">Tag / 01</span><h3>Vestidos</h3><p>Do casual ao especial, cortes que acompanham o corpo sem apertar.</p></div>
+    <div class="tag"><span class="mono">Tag / 02</span><h3>Blusas</h3><p>Tecidos leves e modelagens fáceis de combinar com qualquer look.</p></div>
+    <div class="tag"><span class="mono">Tag / 03</span><h3>Calças</h3><p>Alfaiataria despojada, do escritório ao final de semana.</p></div>
+    <div class="tag"><span class="mono">Tag / 04</span><h3>Acessórios</h3><p>Os detalhes que fecham o look — bolsas, lenços e bijuterias.</p></div>
+  </div>
+</section>
+
+<section class="section reveal about" id="sobre">
+  <div><p class="display big-quote">Feito por mulheres, para <span class="brick">mulheres reais</span>.</p></div>
+  <div><p>A Loja Gabi nasceu da vontade de vestir bem sem complicação. Cada peça é escolhida a dedo, pensando em quem trabalha, cuida da casa, sai com as amigas e ainda quer se sentir bonita no meio da correria. Aqui você encontra moda com atitude, preço justo e atendimento próximo — de mulher para mulher.</p></div>
+</section>
+
+<section class="section reveal" id="contato">
+  <div class="contact">
+    <span class="mono">Fale com a gente</span>
+    <h2 class="display">Bora escolher<br>seu próximo look?</h2>
+    <div class="contact-links">
+      <a href="https://wa.me/5500000000000" target="_blank" rel="noopener" class="cta">WhatsApp</a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="cta cta-outline" style="border-color:var(--paper);">Instagram</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="mono">© 2026 Loja Gabi</span>
+  <span class="mono">Moda feminina · despojada · autoral</span>
+</footer>
+
+<script>
+  // Revela seções ao rolar a página
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  // Carrega produtos do arquivo editável pelo painel /admin
+  fetch('content/products.json?_=' + Date.now())
+    .then(r => r.json())
+    .then(data => {
+      const grid = document.getElementById('produtos-grid');
+      const count = document.getElementById('produtos-count');
+      const produtos = data.products || [];
+      count.textContent = produtos.length + (produtos.length === 1 ? ' peça' : ' peças');
+      if(produtos.length === 0){
+        grid.innerHTML = '<p class="product-empty">Nenhum produto cadastrado ainda.</p>';
+        return;
+      }
+      grid.innerHTML = produtos.map(p => `
+        <div class="product-card">
+          <img class="photo" src="${p.image || 'images/placeholder.jpg'}" alt="${p.title || ''}" loading="lazy">
+          <div class="info">
+            <span class="mono cat">${p.category || ''}</span>
+            <h3>${p.title || 'Peça sem nome'}</h3>
+            <span class="price">${p.price || ''}</span>
+          </div>
+        </div>
+      `).join('');
+    })
+    .catch(() => {
+      document.getElementById('produtos-grid').innerHTML = '<p class="product-empty">Não foi possível carregar os produtos.</p>';
+      document.getElementById('produtos-count').textContent = '—';
+    });
+</script>
+
+</body>
+</html>

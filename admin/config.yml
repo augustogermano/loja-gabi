@@ -1,0 +1,28 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images"
+public_folder: "images"
+
+collections:
+  - name: "products_data"
+    label: "Produtos"
+    files:
+      - file: "content/products.json"
+        label: "Vitrine de Produtos"
+        name: "products"
+        fields:
+          - label: "Produtos"
+            name: "products"
+            widget: "list"
+            summary: "{{title}} — {{price}}"
+            fields:
+              - { label: "Nome da peça", name: "title", widget: "string" }
+              - { label: "Preço", name: "price", widget: "string", hint: "Ex: R$ 129,90" }
+              - label: "Categoria"
+                name: "category"
+                widget: "select"
+                options: ["Vestidos", "Blusas", "Calças", "Acessórios"]
+              - { label: "Foto", name: "image", widget: "image" }
+              - { label: "Descrição curta", name: "description", widget: "text", required: false }
